@@ -7,7 +7,7 @@
 set -o errexit -o nounset
 
 # Check required env vars
-for i in REMOTE_USER REMOTE_HOST PUBLIC_KEY_FILE; 
+for i in "REMOTE_USER" "REMOTE_HOST" "PUBLIC_KEY_FILE"; 
   do 
   if [[ "${!i}" == "" ]]; then echo "Must set $i env var" &&  exit 1; fi ;
 done
@@ -25,10 +25,5 @@ ssh "root@$REMOTE_HOST" \
   chmod 700 ~$REMOTE_USER/.ssh;
   chmod 600 ~$REMOTE_USER/.ssh/authorized_keys;
   chown -R $REMOTE_USER:$REMOTE_USER ~$REMOTE_USER/.ssh;
-  cp /etc/sudoers /etc/sudoers.bak
   echo '$REMOTE_USER ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers;
-  cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak
-  perl -pi -e 's/.?PasswordAuthentication yes/PasswordAuthentication no/' /etc/ssh/sshd_config;
-  perl -pi -e 's/.?PermitRootLogin yes/PermitRootLogin no/' /etc/ssh/sshd_config;
-  reload ssh;
   "
