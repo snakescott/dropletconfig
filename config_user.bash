@@ -16,6 +16,7 @@ scp "$PUBLIC_KEY_FILE" "root@$REMOTE_HOST:public_key.tmp"
 
 # some of this is fairly fragile, should look into more declarative config
 
+# Add a user with nopasswd sudo, disable Password Auth and Root Login via SSH
 ssh "root@$REMOTE_HOST" \
   "adduser --disabled-password --gecos '' $REMOTE_USER;
   adduser $REMOTE_USER sudo;
